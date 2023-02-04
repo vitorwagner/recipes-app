@@ -9,26 +9,32 @@ function DoneRecipes() {
   return (
     <div>
       <Header />
-      <div>
-        <button
-          data-testid="filter-by-all-btn"
-          onClick={ () => setTypeFilter('') }
-        >
-          All
-        </button>
-        <button
-          data-testid="filter-by-meal-btn"
-          onClick={ () => setTypeFilter('meal') }
-        >
-          Meals
-        </button>
-        <button
-          data-testid="filter-by-drink-btn"
-          onClick={ () => setTypeFilter('drink') }
-        >
-          Drinks
-        </button>
+      <div className="text-center">
+        <div className="btn-group ">
+          <button
+            data-testid="filter-by-all-btn"
+            onClick={ () => setTypeFilter('') }
+            className="btn btn-primary"
+          >
+            All
+          </button>
+          <button
+            data-testid="filter-by-meal-btn"
+            onClick={ () => setTypeFilter('meal') }
+            className="btn btn-primary"
+          >
+            Meals
+          </button>
+          <button
+            data-testid="filter-by-drink-btn"
+            onClick={ () => setTypeFilter('drink') }
+            className="btn btn-primary"
+          >
+            Drinks
+          </button>
+        </div>
       </div>
+
       { doneList && doneList.filter((recipe) => {
         if (!typeFilter) {
           return true;

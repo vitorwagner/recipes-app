@@ -14,40 +14,52 @@ function DoneCard({ name, thumbnail, index, category,
   };
 
   return (
-    <div data-testid={ `${index}-recipe-card` }>
-      <button onClick={ redirect }>
+    <div data-testid={ `${index}-recipe-card` } className="card flex-row g-0 text-center">
+      <div onClick={ redirect } role="button" onKeyPress={ redirect } tabIndex={ 0 }>
         <img
           src={ thumbnail }
           alt={ name }
           data-testid={ `${index}-horizontal-image` }
           width="50"
+          className="card-img-top"
         />
-        <p data-testid={ `${index}-horizontal-name` }>{name}</p>
-      </button>
+        <p data-testid={ `${index}-horizontal-name` } className="card-title">{name}</p>
+      </div>
+      <div className="card-body">
+        <p data-testid={ `${index}-horizontal-top-text` }>
+          {type === 'meal' ? `${nationality} - ${category}` : alcoholicOrNot}
+        </p>
+        <p data-testid={ `${index}-horizontal-done-date` }>{doneDate}</p>
 
-      <p data-testid={ `${index}-horizontal-top-text` }>
-        {type === 'meal' ? `${nationality} - ${category}` : alcoholicOrNot}
-      </p>
-      <p data-testid={ `${index}-horizontal-done-date` }>{doneDate}</p>
+        <button
+          data-testid={ `${index}-horizontal-share-btn` }
+          src={ shareIcon }
+          onClick={ () => {
+            copy(`http://localhost:3000/${type}s/${id}`);
+            setShared(true);
+          } }
+          className="btn btn-primary"
+        >
+          Share
+        </button>
+        { shared && <p>Link copied!</p>}
 
-      <button
-        data-testid={ `${index}-horizontal-share-btn` }
-        src={ shareIcon }
-        onClick={ () => {
-          copy(`http://localhost:3000/${type}s/${id}`);
-          setShared(true);
-        } }
-      >
-        Share
-      </button>
-      { shared && <p>Link copied!</p>}
+        {tags[0]
+        && (
+          <div className="text-muted">
+            <span data-testid={ `${index}-${tags[0]}-horizontal-tag` }>
+              {tags[0]}
+            </span>
+            {tags[1]
+              ? <span>, </span>
+              : ''}
+            <span data-testid={ `${index}-${tags[1]}-horizontal-tag` }>
+              {tags[1]}
+            </span>
+          </div>
+        )}
 
-      <p data-testid={ `${index}-${tags[0]}-horizontal-tag` }>
-        {tags[0]}
-      </p>
-      <p data-testid={ `${index}-${tags[1]}-horizontal-tag` }>
-        {tags[1]}
-      </p>
+      </div>
     </div>
   );
 }
