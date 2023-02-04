@@ -17,7 +17,7 @@ function Card({ name, thumbnail, index, id, meal = true }) {
     <button
       onClick={ redirect }
       data-testid={ `${index}-recipe-card` }
-      className="card col-6"
+      className="card col-6 g-0"
     >
       <img
         src={ thumbnail }
@@ -25,7 +25,10 @@ function Card({ name, thumbnail, index, id, meal = true }) {
         data-testid={ `${index}-card-img` }
         className="card-img-top"
       />
-      <h2 data-testid={ `${index}-card-name` } className="card-title">{name}</h2>
+      <div className="card-body">
+        <h3 data-testid={ `${index}-card-name` } className="card-title">{name}</h3>
+
+      </div>
     </button>
   );
 }
