@@ -6,6 +6,8 @@ import { fetchDrinks, fetchMeals, fetchMealCategories,
   fetchDrinkCategories, fetchDrinkByCategory,
   fetchMealByCategory } from '../services/fetch';
 import context from '../context/context';
+import mealIcon from '../images/mealIcon.svg';
+import drinkIcon from '../images/drinkIcon.svg';
 import Card from '../components/Card';
 
 function Recipes() {
@@ -32,7 +34,7 @@ function Recipes() {
     setCategories((prevCategories) => ({ ...prevCategories, drinks: catList.drinks }));
   };
 
-  const toggleDrinkFilter = async ({ target: { name } }) => {
+  const toggleDrinkFilter = async (name) => {
     if (!filter) {
       const list = await fetchDrinkByCategory(name);
       setRecipes((prevRecipes) => ({ ...prevRecipes, drinks: list.drinks }));
@@ -43,7 +45,7 @@ function Recipes() {
     }
   };
 
-  const toggleMealFilter = async ({ target: { name } }) => {
+  const toggleMealFilter = async (name) => {
     if (!filter) {
       const list = await fetchMealByCategory(name);
       setRecipes((prevRecipes) => ({ ...prevRecipes, meals: list.meals }));
@@ -72,18 +74,53 @@ function Recipes() {
   return (
     <div>
       <Header />
-      <button data-testid="All-category-filter" onClick={ resetFilter }>All</button>
-      {pathname === '/drinks'
+      <div className="container">
+
+        <div className="row">
+          <button
+            data-testid="All-category-filter"
+            onClick={ resetFilter }
+            className="btn col-2 d-flex flex-column align-items-center"
+          >
+            <img
+              src={ pathname === '/drinks' ? drinkIcon : mealIcon }
+              alt="Filter icon"
+              style={ { width: '2rem' } }
+            />
+            <p style={ { fontSize: '0.75rem' } }>All</p>
+          </button>
+
+          {pathname === '/drinks'
       && categories.drinks.slice(0, CAT_LENGTH).map((cat) => (
         <button
           key={ cat.strCategory }
           data-testid={ `${cat.strCategory}-category-filter` }
           name={ cat.strCategory }
-          onClick={ toggleDrinkFilter }
+          onClick={ () => toggleDrinkFilter(cat.strCategory) }
+          className="btn col-2 d-flex flex-column align-items-center"
         >
-          {cat.strCategory}
+          <img src={ drinkIcon } alt="Filter icon" style={ { width: '2rem' } } />
+          <p style={ { fontSize: '0.75rem' } }>{cat.strCategory}</p>
         </button>))}
-      {pathname === '/drinks'
+
+          {pathname === '/meals'
+          && categories.meals.slice(0, CAT_LENGTH).map((cat) => (
+            <button
+              key={ cat.strCategory }
+              data-testid={ `${cat.strCategory}-category-filter` }
+              name={ cat.strCategory }
+              onClick={ () => toggleMealFilter(cat.strCategory) }
+              className="btn col-2 d-flex flex-column align-items-center"
+            >
+              <img src={ mealIcon } alt="Filter icon" style={ { width: '2rem' } } />
+              <p style={ { fontSize: '0.75rem' } }>{cat.strCategory}</p>
+            </button>))}
+        </div>
+      </div>
+
+      <div className="container">
+        <div className="card-group row mx-auto">
+          {pathname === '/drinks'
       && recipes.drinks.slice(0, CARD_LENGTH).map((drink, index) => (<Card
         key={ drink.idDrink }
         index={ index }
@@ -92,18 +129,12 @@ function Recipes() {
         meal={ false }
         thumbnail={ drink.strDrinkThumb }
       />))}
+        </div>
+      </div>
 
-      {pathname === '/meals'
-      && categories.meals.slice(0, CAT_LENGTH).map((cat) => (
-        <button
-          key={ cat.strCategory }
-          data-testid={ `${cat.strCategory}-category-filter` }
-          name={ cat.strCategory }
-          onClick={ toggleMealFilter }
-        >
-          {cat.strCategory}
-        </button>))}
-      {pathname === '/meals'
+      <div className="container">
+        <div className="row card-group">
+          {pathname === '/meals'
       && recipes.meals.slice(0, CARD_LENGTH).map((meal, index) => (<Card
         key={ meal.idMeal }
         index={ index }
@@ -112,6 +143,8 @@ function Recipes() {
         meal
         thumbnail={ meal.strMealThumb }
       />))}
+        </div>
+      </div>
 
       <Footer />
     </div>
