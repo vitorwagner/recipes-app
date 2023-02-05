@@ -9,6 +9,8 @@ import mockFetch from './mocks/mockFetch';
 
 const mealsPath = '/meals/52771';
 const loadingStr = 'Loading...';
+const drinksPath = '/drinks/178319';
+const favBtn = 'favorite-btn';
 
 let store = {
   doneRecipes: JSON.stringify([{ id: 52977, type: 'meals', area: 'Turkish', category: 'Side', alcoholicOrNot: '', name: 'Corba' }]),
@@ -69,10 +71,10 @@ describe('Testa RecipeDetails', () => {
     const { history } = renderWithRouter(<RecipeDetails />);
     act(() => {
       // loginSuccess();
-      history.push('/drinks/178319');
+      history.push(drinksPath);
     });
 
-    expect(history.location.pathname).toBe('/drinks/178319');
+    expect(history.location.pathname).toBe(drinksPath);
   });
 
   test('Testa se é chamado os ifs', async () => {
@@ -123,7 +125,7 @@ describe('Testa RecipeDetails', () => {
     expect(history.location.pathname).toBe(mealsPath);
     await waitForElementToBeRemoved(() => screen.getByText(loadingStr));
 
-    const favoriteBtn = screen.getByTestId('favorite-btn');
+    const favoriteBtn = screen.getByTestId(favBtn);
     expect(favoriteBtn.src).toBe('http://localhost/whiteHeartIcon.svg');
     fireEvent.click(favoriteBtn);
     expect(favoriteBtn.src).toBe('http://localhost/blackHeartIcon.svg');
@@ -139,7 +141,7 @@ describe('Testa RecipeDetails', () => {
     expect(history.location.pathname).toBe(mealsPath);
     await waitForElementToBeRemoved(() => screen.getByText(loadingStr));
 
-    const favoriteBtn = screen.getByTestId('favorite-btn');
+    const favoriteBtn = screen.getByTestId(favBtn);
     expect(favoriteBtn.src).toBe('http://localhost/whiteHeartIcon.svg');
     fireEvent.click(favoriteBtn);
     expect(favoriteBtn.src).toBe('http://localhost/blackHeartIcon.svg');
@@ -157,5 +159,55 @@ describe('Testa RecipeDetails', () => {
     });
     expect(history.location.pathname).toBe(mealsPath);
     await waitForElementToBeRemoved(() => screen.getByText(loadingStr));
+  });
+
+  test('Testa rota com drinks sem localStorage', async () => {
+    const { history } = renderWithRouter(<App />);
+    act(() => {
+      loginSuccess();
+      history.push(drinksPath);
+    });
+    expect(history.location.pathname).toBe(drinksPath);
+    await waitForElementToBeRemoved(() => screen.getByText(loadingStr));
+    const favoriteBtn = screen.getByTestId(favBtn);
+    act(() => userEvent.click(favoriteBtn));
+  });
+
+  test('Testa rota com drinks', async () => {
+    store = {
+      doneRecipes: JSON.stringify([
+        {
+          id: '178319',
+          type: 'drink',
+          nationality: '',
+          category: 'Cocktail',
+          alcoholicOrNot: 'Alcoholic',
+          name: 'Aquamarine',
+          image: 'https://www.thecocktaildb.com/images/media/drink/zvsre31572902738.jpg',
+          doneDate: '2023-02-05T18:05:19.314Z',
+          tags: [],
+        },
+      ]),
+      favoriteRecipes: JSON.stringify([
+        {
+          id: '178319',
+          type: 'drink',
+          nationality: '',
+          category: 'Cocktail',
+          alcoholicOrNot: 'Alcoholic',
+          name: 'Aquamarine',
+          image: 'https://www.thecocktaildb.com/images/media/drink/zvsre31572902738.jpg',
+        },
+      ]),
+    };
+    const { history } = renderWithRouter(<App />);
+    act(() => {
+      loginSuccess();
+      history.push(drinksPath);
+    });
+    expect(history.location.pathname).toBe(drinksPath);
+    await waitForElementToBeRemoved(() => screen.getByText(loadingStr));
+    const favoriteBtn = screen.getByTestId(favBtn);
+    act(() => userEvent.click(favoriteBtn));
   });
 });
