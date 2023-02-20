@@ -4,8 +4,8 @@ import { act } from 'react-dom/test-utils';
 import userEvent from '@testing-library/user-event';
 import renderWithRouter from './helpers/renderWithRouter';
 import App from '../App';
-import oneMeal from '../../cypress/mocks/oneMeal';
-import oneDrink from '../../cypress/mocks/oneDrink';
+import oneMeal from './mocks/foodmocks/oneMeal';
+import oneDrink from './mocks/foodmocks/oneDrink';
 
 const MEALS_URL = 'https://www.themealdb.com/api/json/v1/1/';
 const DRINKS_URL = 'https://www.thecocktaildb.com/api/json/v1/1/';

@@ -1,6 +1,5 @@
 import { fireEvent, screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
-// import oneMeal from '../../cypress/mocks/oneMeal';
 import App from '../App';
 import RecipeDetails from '../pages/RecipeDetails';
 import { loginSuccess } from './helpers/login';
