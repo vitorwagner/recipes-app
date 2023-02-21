@@ -35,6 +35,7 @@ export default function useCreateUrl(endPoint) {
 
   return useMemo(
     () => ([url, setEndPoint, fullUrl, updateUrl, setFullUrl]),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [url, fullUrl, endPoint],
   );
 }

@@ -1,5 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
+import '../style/Login.css';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 
 function Login(props) {
   const [loginInfo, setloginInfo] = useState({
@@ -38,36 +41,46 @@ function Login(props) {
   };
 
   return (
-    <div>
-      <label htmlFor="email">
-        Email
-        <input
-          type="text"
-          name="email"
-          data-testid="email-input"
-          onChange={ handleChange }
-          value={ loginInfo.email }
-        />
-      </label>
-      <label htmlFor="password">
-        Password
-        <input
-          type="password"
-          name="password"
-          data-testid="password-input"
-          onChange={ handleChange }
-          value={ loginInfo.password }
-        />
-      </label>
-      <button
-        type="button"
-        data-testid="login-submit-btn"
-        disabled={ isDisabled }
-        onClick={ handleLogin }
-      >
-        Entrar
-      </button>
+
+    <div className="login">
+      <h1 className="login-title">Login</h1>
+      <div className="login-form">
+        <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Label htmlFor="email">
+            Email
+            <Form.Control
+              type="text"
+              name="email"
+              data-testid="email-input"
+              onChange={ handleChange }
+              value={ loginInfo.email }
+              placeholder="test@test.com"
+            />
+          </Form.Label>
+          <Form.Label htmlFor="password">
+            Password
+            <Form.Control
+              type="password"
+              name="password"
+              data-testid="password-input"
+              onChange={ handleChange }
+              value={ loginInfo.password }
+              placeholder="1234567"
+            />
+          </Form.Label>
+        </Form.Group>
+        <Button
+          variant="warning"
+          type="button"
+          data-testid="login-submit-btn"
+          disabled={ isDisabled }
+          onClick={ handleLogin }
+        >
+          Entrar
+        </Button>
+      </div>
     </div>
+
   );
 }
 
