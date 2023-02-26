@@ -1,39 +1,44 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import profileIcon from '../images/profileIcon.svg';
 import searchIcon from '../images/searchIcon.svg';
 import SearchBar from './SearchBar';
+import '../style/Header.css';
 
 function Header() {
   const history = useHistory();
   const { pathname } = history.location;
   const [showSearchBar, setShowSearchBar] = React.useState(false);
 
-  const handleClickProfile = () => {
-    history.push('/profile');
-  };
+  const profileButton = () => (
+    <Link
+      data-testid="profile-top-btn"
+      src={ profileIcon }
+      to="/profile"
+      className="headerIcon"
+    >
+      <img src={ profileIcon } alt="Ícone de perfil" />
+    </Link>);
+
+  const searchButton = () => (
+    <button
+      src={ searchIcon }
+      data-testid="search-top-btn"
+      onClick={ () => setShowSearchBar(!showSearchBar) }
+    >
+      <img src={ searchIcon } alt="Ícone de busca" />
+    </button>);
+
   return (
-    <header>
+    <header className="header">
       {pathname === '/meals' && (
         <>
           <h3 data-testid="page-title">Meals</h3>
-          <button
-            src={ searchIcon }
-            data-testid="search-top-btn"
-            onClick={ () => setShowSearchBar(!showSearchBar) }
-          >
-            <img src={ searchIcon } alt="Ícone de busca" />
-          </button>
-          <button
-            data-testid="profile-top-btn"
-            src={ profileIcon }
-            onClick={ handleClickProfile }
-          >
-            <img src={ profileIcon } alt="Ícone de perfil" />
-          </button>
+          { searchButton() }
           {
             showSearchBar && <SearchBar />
           }
+          { profileButton() }
         </>)}
       {pathname === '/drinks' && (
         <>
@@ -45,49 +50,25 @@ function Header() {
           >
             <img src={ searchIcon } alt="Ícone de busca" />
           </button>
-          <button
-            data-testid="profile-top-btn"
-            src={ profileIcon }
-            onClick={ handleClickProfile }
-          >
-            <img src={ profileIcon } alt="Ícone de perfil" />
-          </button>
           {
             showSearchBar && <SearchBar />
           }
+          { profileButton() }
         </>)}
       {pathname === '/profile' && (
         <>
           <h3 data-testid="page-title">Profile</h3>
-          <button
-            data-testid="profile-top-btn"
-            src={ profileIcon }
-            onClick={ handleClickProfile }
-          >
-            <img src={ profileIcon } alt="Ícone de perfil" />
-          </button>
+          { profileButton() }
         </>)}
       {pathname === '/done-recipes' && (
         <>
           <h3 data-testid="page-title">Done Recipes</h3>
-          <button
-            data-testid="profile-top-btn"
-            src={ profileIcon }
-            onClick={ handleClickProfile }
-          >
-            <img src={ profileIcon } alt="Ícone de perfil" />
-          </button>
+          { profileButton() }
         </>)}
       {pathname === '/favorite-recipes' && (
         <>
           <h3 data-testid="page-title">Favorite Recipes</h3>
-          <button
-            data-testid="profile-top-btn"
-            src={ profileIcon }
-            onClick={ handleClickProfile }
-          >
-            <img src={ profileIcon } alt="Ícone de perfil" />
-          </button>
+          { profileButton() }
         </>)}
     </header>
   );

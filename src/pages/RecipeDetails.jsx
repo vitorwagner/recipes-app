@@ -36,7 +36,6 @@ function RecipeDetails() {
 
     const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes'));
     const haveStartedRecipes = JSON.parse(localStorage.getItem('inProgressRecipes'));
-    console.log(haveStartedRecipes);
     const favorites = JSON.parse(localStorage.getItem('favoriteRecipes'));
 
     if (doneRecipes) {
@@ -90,7 +89,6 @@ function RecipeDetails() {
     .filter((key) => key[0].includes('strIngredient') && key[1]);
   const measurement = Object.entries(details)
     .filter((key) => key[0].includes('strMeasure') && key[1]);
-  console.log(ingredients, measurement);
   return (
     <div>
       <main>
@@ -137,7 +135,7 @@ function RecipeDetails() {
       </main>
       {showStartRecipes && (
         <Link
-          className="start-recipes"
+          className="start-recipes btn btn-primary"
           to={ `${url}/in-progress` }
           data-testid="start-recipe-btn"
         >
