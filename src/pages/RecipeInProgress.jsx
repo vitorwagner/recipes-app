@@ -10,7 +10,7 @@ function RecipeInProgress({ match, history }) {
   const [recipeDetails, setRecipeDetails] = useState([]);
   const [ingredientList, setIngredientList] = useState(null);
   const [ingredientCheck, setIngredientCheck] = useState([]);
-  const [currentRecipe, setCurrentRecipe] = useState(null);
+  const [currentRecipe, setCurrentRecipe] = useState({});
   const [shared, setShared] = useState(false);
   const favoriteLocal = (JSON.parse(localStorage.getItem('favoriteRecipes'))) || [];
   const [favorites, setFavorites] = useState(favoriteLocal);
@@ -95,7 +95,7 @@ function RecipeInProgress({ match, history }) {
     const infoForFinished = {
       id: recipeId,
       type: mealOrDrink === 'meals' ? 'meal' : 'drink',
-      nationality: currentRecipe.strArea === undefined ? '' : currentRecipe.strArea,
+      nationality: currentRecipe.strArea ? '' : currentRecipe.strArea,
       category: currentRecipe.strCategory,
       alcoholicOrNot: mealOrDrink === 'drinks' ? currentRecipe.strAlcoholic : '',
       name: mealOrDrink === 'meals' ? currentRecipe.strMeal : currentRecipe.strDrink,
@@ -140,13 +140,14 @@ function RecipeInProgress({ match, history }) {
       const infoForFavorite = {
         id: recipeId,
         type: mealOrDrink === 'meals' ? 'meal' : 'drink',
-        nationality: currentRecipe.strArea === undefined ? '' : currentRecipe.strArea,
+        nationality: currentRecipe.strArea ? '' : currentRecipe.strArea,
         category: currentRecipe.strCategory,
         alcoholicOrNot: mealOrDrink === 'drinks' ? currentRecipe.strAlcoholic : '',
         name: mealOrDrink === 'meals' ? currentRecipe.strMeal : currentRecipe.strDrink,
         image: mealOrDrink === 'meals'
           ? currentRecipe.strMealThumb : currentRecipe.strDrinkThumb,
       };
+      console.log(currentRecipe);
       setFavorites([...favorites, infoForFavorite]);
       localStorage.setItem(
         'favoriteRecipes',

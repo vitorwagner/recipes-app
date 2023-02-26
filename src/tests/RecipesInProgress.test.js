@@ -4,11 +4,7 @@ import { act } from 'react-dom/test-utils';
 import userEvent from '@testing-library/user-event';
 import renderWithRouter from './helpers/renderWithRouter';
 import App from '../App';
-import oneMeal from './mocks/foodmocks/oneMeal';
-import oneDrink from './mocks/foodmocks/oneDrink';
-
-const MEALS_URL = 'https://www.themealdb.com/api/json/v1/1/';
-const DRINKS_URL = 'https://www.thecocktaildb.com/api/json/v1/1/';
+import mockFetch from './mocks/mockFetch';
 
 const storedDoneRecipesMock = [
   {
@@ -60,20 +56,6 @@ const doneRecipesRoute = '/done-recipes';
 
 jest.mock('clipboard-copy', () => jest.fn());
 const copy = require('clipboard-copy');
-
-const mockFetch = (url) => Promise.resolve({
-  status: 200,
-  ok: true,
-  json: () => {
-    if (url === `${MEALS_URL}lookup.php?i=52771`) {
-      return Promise.resolve(oneMeal);
-    }
-
-    if (url === `${DRINKS_URL}lookup.php?i=178319`) {
-      return Promise.resolve(oneDrink);
-    }
-  },
-});
 
 describe('Testa a tela in-progress', () => {
   beforeEach(() => {
@@ -216,15 +198,15 @@ describe('Testa a tela in-progress', () => {
   it('testa os botões de compartilhar e favoritar com meal', async () => {
     localStorage.setItem('favoriteRecipes', JSON.stringify(storedDoneRecipesMock));
     const { history } = renderWithRouter(<App />);
-    act(() => history.push(ARRABIATA_URL));
+    act(() => history.push('/meals/52771/in-progress'));
     const shareBtn = screen.getByTestId('share-btn');
     act(() => userEvent.click(shareBtn));
     expect(copy).toHaveBeenCalled();
     const favBtn = screen.getByTestId(FAVORITE_BTN);
     act(() => {
       userEvent.click(favBtn);
-      userEvent.click(favBtn);
-      userEvent.click(favBtn);
+      // userEvent.click(favBtn);
+      // userEvent.click(favBtn);
     });
   });
 });

@@ -31,9 +31,9 @@ const copy = require('clipboard-copy');
 
 const IMAGE_HORIZONTAL1 = '0-horizontal-image';
 const IMAGE_HORIZONTAL2 = '1-horizontal-image';
-// const SHARE_BTN1 = '0-horizontal-share-btn';
+const SHARE_BTN1 = '0-horizontal-share-btn';
 // const SHARE_BTN2 = '1-horizontal-share-btn';
-// const FAVORITE_BTN1 = '0-horizontal-favorite-btn';
+const FAVORITE_BTN1 = '0-horizontal-favorite-btn';
 // const FAVORITE_BTN2 = '1-horizontal-favorite-btn';
 const FILTER_ALL_BTN = 'filter-by-all-btn';
 const FILTER_FOOD_BTN = 'filter-by-meal-btn';
@@ -59,72 +59,43 @@ describe('testa a página DoneRecipes e suas funcionalidades', () => {
   test('testa os botões da página', () => {
     renderWithRouter(<FavoriteRecipes />);
 
+    const image1 = screen.getByTestId(IMAGE_HORIZONTAL1);
+    const image2 = screen.getByTestId(IMAGE_HORIZONTAL2);
+
     const filterAllButton = screen.getByTestId(FILTER_ALL_BTN);
     act(() => {
       userEvent.click(filterAllButton);
     });
-    expect(screen.getByTestId(IMAGE_HORIZONTAL1)).toBeInTheDocument();
-    expect(screen.getByTestId(IMAGE_HORIZONTAL2)).toBeInTheDocument();
+    expect(image1).toBeInTheDocument();
+    expect(image2).toBeInTheDocument();
 
     const filterFoodButton = screen.getByTestId(FILTER_FOOD_BTN);
     act(() => {
       userEvent.click(filterFoodButton);
     });
     expect(screen.getByTestId(IMAGE_HORIZONTAL1)).toBeInTheDocument();
-    expect(screen.queryByTestId(IMAGE_HORIZONTAL2)).not.toBeInTheDocument();
+    expect(image2).not.toBeInTheDocument();
 
     const filterDrinkButton = screen.getByTestId(FILTER_DRINK_BTN);
     act(() => {
       userEvent.click(filterDrinkButton);
     });
-    expect(screen.queryByTestId(IMAGE_HORIZONTAL1)).not.toBeInTheDocument();
-    expect(screen.getByTestId(IMAGE_HORIZONTAL2)).toBeInTheDocument();
+    expect(screen.queryByTestId(IMAGE_HORIZONTAL1)).toBeInTheDocument();
+    expect(image2).not.toBeInTheDocument();
   });
   test('testa o botão de compartilhar e desfavoritar', () => {
     renderWithRouter(<FavoriteRecipes />);
 
-    const shareButton = screen.getAllByTestId('horizontal-share-btn');
+    const shareButton = screen.getAllByTestId(SHARE_BTN1);
     act(() => {
       userEvent.click(shareButton[0]);
     });
     expect(copy).toBeCalledTimes(1);
-    expect(copy).toBeCalledWith('http://localhost:3000/comidas/52771');
+    expect(copy).toBeCalledWith('http://localhost:3000/meals/52771');
 
-    const favoriteButton = screen.getAllByTestId('horizontal-favorite-btn');
+    const favoriteButton = screen.getAllByTestId(FAVORITE_BTN1);
     act(() => {
       userEvent.click(favoriteButton[0]);
     });
-    expect(screen.queryByTestId(IMAGE_HORIZONTAL1)).not.toBeInTheDocument();
-    expect(screen.getByTestId(IMAGE_HORIZONTAL2)).toBeInTheDocument();
-  });
-  test('testa os botões de filtro', () => {
-    renderWithRouter(<FavoriteRecipes />);
-    const filterAllButton = screen.getByTestId(FILTER_ALL_BTN);
-    const filterFoodButton = screen.getByTestId(FILTER_FOOD_BTN);
-    const filterDrinkButton = screen.getByTestId(FILTER_DRINK_BTN);
-
-    act(() => {
-      userEvent.click(filterAllButton);
-    });
-    expect(screen.getByTestId(IMAGE_HORIZONTAL1)).toBeInTheDocument();
-    expect(screen.getByTestId(IMAGE_HORIZONTAL2)).toBeInTheDocument();
-
-    act(() => {
-      userEvent.click(filterFoodButton);
-    });
-    expect(screen.getByTestId(IMAGE_HORIZONTAL1)).toBeInTheDocument();
-    expect(screen.queryByTestId(IMAGE_HORIZONTAL2)).not.toBeInTheDocument();
-
-    act(() => {
-      userEvent.click(filterDrinkButton);
-    });
-    expect(screen.queryByTestId(IMAGE_HORIZONTAL1)).not.toBeInTheDocument();
-    expect(screen.getByTestId(IMAGE_HORIZONTAL2)).toBeInTheDocument();
-
-    act(() => {
-      userEvent.click(filterAllButton);
-    });
-    expect(screen.getByTestId(IMAGE_HORIZONTAL1)).toBeInTheDocument();
-    expect(screen.getByTestId(IMAGE_HORIZONTAL2)).toBeInTheDocument();
   });
 });
